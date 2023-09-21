@@ -1,0 +1,17 @@
+.env
+*.scss
+*.css
+*.yml
+*.d.ts
+*.md
+*.html
+*.json
+*.lock
+*.ejs
+dist/**
+coverage/**
+node_modules/**
+.prettierignore
+.eslintignore
+.stylelintignore
+.eslintrc.js

@@ -1,0 +1,9 @@
+*.css
+*.md
+*.yml
+.env
+*.lock
+*.ejs
+.prettierignore
+.eslintignore
+.eslintrc.cjs
