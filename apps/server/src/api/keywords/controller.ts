@@ -24,8 +24,6 @@ const uploadKeywords = async (req: Request, res: Response) => {
     const userId = req.user?.id
     const fileContents = req.file.buffer.toString('utf-8')
     const keywords = fileContents.split(/\r?\n/).filter(Boolean)
-    const chunks = splitArrToChunks(keywords, 10)
-    const addToQueue = chunks.map((chunk) => addKeywordsToQueue(userId!, chunk))
     const payload = keywords.map((keyword) => {
       return {
         keyword,
@@ -33,7 +31,16 @@ const uploadKeywords = async (req: Request, res: Response) => {
       }
     })
 
-    await models.Keyword.bulkCreate(payload)
+    const savedKeywords = await models.Keyword.bulkCreate(payload)
+    const keywordsWithId = savedKeywords.map(({ id, keyword }) => ({ id, keyword }))
+    const chunks = splitArrToChunks(keywordsWithId, 10)
+    const addToQueue = chunks.map((chunk) =>
+      addKeywordsToQueue({
+        ownerId: userId!,
+        payload: chunk,
+      }),
+    )
+
     await Promise.all(addToQueue)
 
     return res.json({ success: true })

@@ -1,6 +1,7 @@
 import Bull from 'bull'
 import env from '../config/environment'
 import { keywordProcess } from './scraper'
+import { TKeywordProcessor } from '../interfaces'
 
 const scraperQueue = new Bull('scraper-queue', {
   redis: env.redis.connection,
@@ -8,6 +9,6 @@ const scraperQueue = new Bull('scraper-queue', {
 
 scraperQueue.process(keywordProcess)
 
-export const addKeywordsToQueue = async (ownerId: number, keywords: string[]) => {
-  await scraperQueue.add({ data: { ownerId, keywords } }, { delay: 1000 })
+export const addKeywordsToQueue = async (payload: TKeywordProcessor) => {
+  await scraperQueue.add(payload, { delay: 1000 })
 }
