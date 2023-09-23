@@ -2,7 +2,6 @@ import { Request, Response } from 'express'
 import { models } from '../../db/models'
 import { splitArrToChunks } from '../../utils'
 import { addKeywordsToQueue } from '../../services'
-import Keyword from '../../db/models/keyword'
 
 const getKeywords = async (req: Request, res: Response) => {
   try {
@@ -33,8 +32,7 @@ const uploadKeywords = async (req: Request, res: Response) => {
     })
 
     const savedKeywords = await models.Keyword.bulkCreate(payload)
-    const plainKeywords = savedKeywords.map((keyword) => keyword.get({ plain: true }) as Keyword)
-    const keywordsWithId = plainKeywords.map(({ id, keyword }) => ({ id, keyword }))
+    const keywordsWithId = savedKeywords.map(({ id, keyword }) => ({ id, keyword }))
     const chunks = splitArrToChunks(keywordsWithId, 10)
     const addToQueue = chunks.map((chunk) =>
       addKeywordsToQueue({
