@@ -21,14 +21,15 @@ const uploadKeywords = async (req: Request, res: Response) => {
     if (!req.file) {
       return res.json({ success: false, error: 'Please upload valid file' })
     }
+    const userId = req.user?.id
     const fileContents = req.file.buffer.toString('utf-8')
     const keywords = fileContents.split(/\r?\n/).filter(Boolean)
-    const keywordsChunks = splitArrToChunks(keywords, 10)
-    const addToQueue = keywordsChunks.map((chunks) => addKeywordsToQueue(req.user!.id, chunks))
+    const chunks = splitArrToChunks(keywords, 10)
+    const addToQueue = chunks.map((chunk) => addKeywordsToQueue(userId!, chunk))
     const payload = keywords.map((keyword) => {
       return {
         keyword,
-        uploader: req.user?.id,
+        uploader: userId,
       }
     })
 
