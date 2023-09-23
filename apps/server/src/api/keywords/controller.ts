@@ -1,7 +1,8 @@
 import { Request, Response } from 'express'
 import { models } from '../../db/models'
-import { splitArrToChunks } from '../../utils'
+import { extractNonce, getErrorMsg, splitArrToChunks } from '../../utils'
 import { addKeywordsToQueue } from '../../services'
+import path from 'path'
 
 const getKeywords = async (req: Request, res: Response) => {
   try {
@@ -11,8 +12,7 @@ const getKeywords = async (req: Request, res: Response) => {
     const keywords = user ? await user.getKeywords() : []
     return res.json({ success: true, keywords })
   } catch (err) {
-    const message = err instanceof Error ? err.message : 'Something went wrong'
-    return res.json({ success: false, error: message })
+    return res.json({ success: false, error: getErrorMsg(err) })
   }
 }
 
@@ -45,12 +45,26 @@ const uploadKeywords = async (req: Request, res: Response) => {
 
     return res.json({ success: true })
   } catch (err) {
-    const message = err instanceof Error ? err.message : 'Something went wrong'
-    return res.json({ success: false, error: message })
+    return res.json({ success: false, error: getErrorMsg(err) })
+  }
+}
+
+const getPreview = async (req: Request, res: Response) => {
+  try {
+    const html = path.join(__dirname, `../../pages/${req.params.key}.html`)
+    const nonce = extractNonce(html)
+
+    return res
+      .set('Content-Type', 'text/html')
+      .setHeader('Content-Security-Policy', `script-src 'self' 'nonce-${nonce}'`)
+      .sendFile(html)
+  } catch (err) {
+    return res.json({ success: false, error: getErrorMsg(err) })
   }
 }
 
 export default {
   getKeywords,
+  getPreview,
   uploadKeywords,
 }
