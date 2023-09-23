@@ -54,8 +54,6 @@ const getPreview = async (req: Request, res: Response) => {
     const html = path.join(__dirname, `../../pages/${req.params.key}.html`)
     const nonce = extractNonce(html)
 
-    console.log('nonce', nonce)
-
     return res
       .set('Content-Type', 'text/html')
       .setHeader('Content-Security-Policy', `script-src 'self' 'nonce-${nonce}'`)

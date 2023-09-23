@@ -53,7 +53,9 @@ export const processKeyword = async (job: Job<TKeywordProcessor>) => {
       }
       await new Promise((resolve) => setTimeout(resolve, getRandomDelay()))
     }
+
     await saveResults(scrapedResults)
+
     return Promise.resolve(scrapedResults)
   } catch (err) {
     return Promise.reject(err)
