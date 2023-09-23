@@ -3,11 +3,11 @@ import env from '../config/environment'
 import { TJwtSignPayload } from '../interfaces'
 
 export const signAccessToken = (payload: TJwtSignPayload) => {
-  return jwt.sign(payload, env.secret.accessToken, { expiresIn: '5m' })
+  return jwt.sign(payload, env.secret.accessToken, { expiresIn: '2h' })
 }
 
 export const signRefreshToken = (payload: TJwtSignPayload) => {
-  return jwt.sign(payload, env.secret.refreshToken, { expiresIn: '7d' })
+  return jwt.sign(payload, env.secret.refreshToken, { expiresIn: '2d' })
 }
 
 export const verifyRefreshToken = (refreshToken: string) => {

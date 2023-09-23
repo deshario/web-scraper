@@ -1,12 +1,15 @@
 import bcrypt from 'bcrypt'
-import { Model, DataTypes, Sequelize, Op } from 'sequelize'
+import { Model, DataTypes, Sequelize, Op, HasManyGetAssociationsMixin } from 'sequelize'
 import { TUser, TUserFilter } from '../../interfaces'
+import Keyword from './keyword'
 
 class User extends Model implements TUser {
-  public id!: number
-  public username!: string
-  public email!: string
-  public passwordHash!: string
+  declare id: number
+  declare username: string
+  declare email: string
+  declare passwordHash: string
+
+  declare getKeywords: HasManyGetAssociationsMixin<Keyword>
 
   static initModel(sequelize: Sequelize): void {
     User.init(
@@ -39,7 +42,12 @@ class User extends Model implements TUser {
     )
   }
 
-  public static associateModel(): void {}
+  public static associateModel(): void {
+    User.hasMany(Keyword, {
+      foreignKey: 'uploader',
+      as: 'keywords',
+    })
+  }
 
   static async getUser(where: TUserFilter, excludePassword = true): Promise<User | null> {
     try {
