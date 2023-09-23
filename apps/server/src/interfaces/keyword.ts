@@ -3,16 +3,20 @@ export type TKeyword = {
   uploader: number
   totalLinks?: number
   adWordsCount?: number
-  resultsCount?: number
+  resultsCount?: string
   executionTime?: number
   htmlPreview?: string
   isProcessed: boolean
 }
 
+export type TKeywordPayload = {
+  id: number
+  keyword: string
+}
+
+export type TKeywordResult = TKeyword & { id: number }
+
 export type TKeywordProcessor = {
   ownerId: number
-  payload: {
-    id: number
-    keyword: string
-  }[]
+  payload: TKeywordPayload[]
 }
