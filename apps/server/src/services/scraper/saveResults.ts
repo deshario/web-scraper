@@ -1,5 +1,5 @@
-import { TKeyword } from '../interfaces'
-import { models } from '../db/models'
+import { TKeyword } from '../../interfaces'
+import { models } from '../../db/models'
 
 export const saveResults = async (payload: TKeyword[]) => {
   try {

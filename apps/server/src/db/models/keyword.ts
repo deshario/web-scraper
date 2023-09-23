@@ -8,7 +8,7 @@ class Keyword extends Model implements TKeyword {
   declare uploader: number
   declare totalLinks: number
   declare adWordsCount: number
-  declare resultsCount: number
+  declare resultsCount: string
   declare executionTime: number
   declare htmlPreview: string
   declare isProcessed: boolean
@@ -38,11 +38,11 @@ class Keyword extends Model implements TKeyword {
           allowNull: true,
         },
         resultsCount: {
-          type: DataTypes.NUMBER,
+          type: DataTypes.STRING,
           allowNull: true,
         },
         executionTime: {
-          type: DataTypes.NUMBER,
+          type: DataTypes.DECIMAL(10, 2),
           allowNull: true,
         },
         htmlPreview: {
