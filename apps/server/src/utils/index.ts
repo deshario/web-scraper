@@ -1,3 +1,5 @@
+import fs from 'fs'
+
 export const splitArrToChunks = <T>(array: T[], chunkSize: number) => {
   const numChunks = Math.ceil(array.length / chunkSize)
   return Array.from({ length: numChunks }, (_, index) => {
@@ -15,6 +17,21 @@ export const getExecutionResult = (resultsText = '') => {
     resultsCount: match?.[1] || null,
     executionTime: Number(match?.[2]) || null,
   }
+}
+
+export const getErrorMsg = (error: unknown) => {
+  return error instanceof Error ? error.message : 'Something went wrong'
+}
+
+export const extractNonce = (html: string) => {
+  const content = fs.readFileSync(html, 'utf8')
+  const scriptTag = content.match(/<script[^>]*?nonce="([^"]*)"[^>]*>/g)
+  const nonce = scriptTag ? scriptTag[1].match(/nonce="([^"]*)"/)?.[1] : ''
+  return nonce
+}
+
+export const getRandomString = () => {
+  return (Math.random() + 1).toString(36).substring(3)
 }
 
 export const getRandomAgent = () => {

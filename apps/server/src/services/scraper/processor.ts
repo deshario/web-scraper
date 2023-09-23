@@ -2,8 +2,10 @@ import { Job } from 'bull'
 import { TKeywordPayload, TKeywordProcessor, TKeywordResult } from '../../interfaces'
 import { saveResults } from './saveResults'
 import { scrapeGoogleSearch } from './scraper'
-import { getExecutionResult, getRandomDelay } from '../../utils'
+import { getExecutionResult, getRandomDelay, getRandomString } from '../../utils'
 import * as cheerio from 'cheerio'
+import path from 'path'
+import fs from 'fs'
 
 const scrapeKeywordData = async (
   uploader: number,
@@ -42,12 +44,16 @@ export const processKeyword = async (job: Job<TKeywordProcessor>) => {
     const scrapedResults: TKeywordResult[] = []
     for (const keyword of payload) {
       const result = await scrapeKeywordData(ownerId, keyword)
-      if (result) scrapedResults.push(result)
+      if (result) {
+        scrapedResults.push(result)
+        const fileName = `${getRandomString()}.html`
+        const pagesDir = path.join(__dirname, '../../pages', fileName)
+        await fs.writeFileSync(pagesDir, result.htmlPreview!)
+        result.htmlPreview = fileName
+      }
       await new Promise((resolve) => setTimeout(resolve, getRandomDelay()))
     }
-
     await saveResults(scrapedResults)
-
     return Promise.resolve(scrapedResults)
   } catch (err) {
     return Promise.reject(err)
