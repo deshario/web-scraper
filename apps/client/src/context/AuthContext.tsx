@@ -2,8 +2,9 @@ import { useState, useEffect, createContext, ReactNode } from 'react'
 import apiService from '@api/service'
 import { IUser } from '@interfaces/user'
 import { ILoginForm, IRegisterForm } from '@interfaces/form'
+import { userKey, accessTokenKey, refreshTokenKey } from '@constants/index'
 
-type TAuthContextType = {
+interface IAuthContextType {
   authenticated: boolean
   user: IUser | null
   notification: string
@@ -12,7 +13,7 @@ type TAuthContextType = {
   deAuthenticate: () => void
 }
 
-export const AuthContext = createContext<TAuthContextType | undefined>(undefined)
+export const AuthContext = createContext<IAuthContextType | undefined>(undefined)
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true)
@@ -21,8 +22,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [authenticated, setAuthenticated] = useState(false)
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('scUser')
-    const storedAccessToken = localStorage.getItem('scAccessToken')
+    const storedUser = localStorage.getItem(userKey)
+    const storedAccessToken = localStorage.getItem(accessTokenKey)
 
     if (storedUser && storedAccessToken) {
       setAuthenticated(true)
@@ -45,9 +46,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setAuthenticated(true)
       setUser(result.user)
       showNotification(`Welcome ${result.user.username}`)
-      localStorage.setItem('scUser', JSON.stringify(result.user))
-      localStorage.setItem('scAccessToken', result.accessToken)
-      localStorage.setItem('scRefreshToken', result.refreshToken)
+      localStorage.setItem(userKey, JSON.stringify(result.user))
+      localStorage.setItem(accessTokenKey, result.accessToken)
+      localStorage.setItem(refreshTokenKey, result.refreshToken)
     }
   }
 
@@ -60,9 +61,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const deAuthenticate = () => {
     setAuthenticated(false)
     setUser(null)
-    localStorage.removeItem('scUser')
-    localStorage.removeItem('scAccessToken')
-    localStorage.removeItem('scRefreshToken')
+    localStorage.removeItem(userKey)
+    localStorage.removeItem(accessTokenKey)
+    localStorage.removeItem(refreshTokenKey)
   }
 
   if (loading) return null

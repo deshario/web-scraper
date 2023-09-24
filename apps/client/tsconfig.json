@@ -22,10 +22,13 @@
 
     "baseUrl": "./",
     "paths": {
+      "@lib/*": ["src/lib/*"],
       "@api/*": ["src/api/*"],
       "@pages/*": ["src/pages/*"],
       "@hooks/*": ["src/hooks/*"],
       "@assets/*": ["src/assets/*"],
+      "@context/*": ["src/context/*"],
+      "@constants/*": ["src/constants/*"],
       "@interfaces/*": ["src/interfaces/*"],
       "@components/*": ["src/components/*"]
     },
