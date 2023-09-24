@@ -1,6 +1,6 @@
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
-import { ILoginForm } from 'src/interfaces'
+import { ILoginForm } from '@interfaces/form'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
