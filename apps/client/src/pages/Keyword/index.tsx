@@ -1,3 +1,6 @@
+import { useCallback } from 'react'
+import { useKeyword } from '@hooks/useKeyword'
+import List from '@components/List'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
@@ -5,17 +8,27 @@ import Card from 'react-bootstrap/Card'
 import Table from 'react-bootstrap/Table'
 import Spinner from 'react-bootstrap/Spinner'
 
-const Loader = () => {
-  return <Spinner animation='border' variant='primary' />
-}
+const Skeleton = <Spinner animation='border' variant='primary' />
 
 const KeywordPage = () => {
+  const [keywords, renderCell, renderPreview] = useKeyword()
+
+  const renderCellItem = useCallback(
+    (isProcessed: boolean, value: number | string | undefined) => {
+      return renderCell(isProcessed, value, Skeleton)
+    },
+    [renderCell],
+  )
+
   return (
     <Row>
       <Col>
         <Card>
-          <Card.Header className='market-header'>
+          <Card.Header className='d-flex p-3'>
             <h4>Keywords</h4>
+            <Button variant='secondary' size='sm' className='ms-3'>
+              Upload
+            </Button>
           </Card.Header>
           <Table responsive striped bordered hover style={{ marginBottom: 0 }}>
             <thead>
@@ -31,50 +44,35 @@ const KeywordPage = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>Banana</td>
-                <td>20</td>
-                <td>-</td>
-                <td>54,000,000</td>
-                <td>0.52s</td>
-                <td>
-                  <Button variant='success'>View</Button>
-                </td>
-                <td>true</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Carrot</td>
-                <td>50</td>
-                <td>-</td>
-                <td>34,340,000</td>
-                <td>0.52s</td>
-                <td>
-                  <Button variant='success'>View</Button>
-                </td>
-                <td>true</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>iPhone</td>
-                <td>
-                  <Loader />
-                </td>
-                <td>
-                  <Loader />
-                </td>
-                <td>
-                  <Loader />
-                </td>
-                <td>
-                  <Loader />
-                </td>
-                <td>
-                  <Loader />
-                </td>
-                <td>false</td>
-              </tr>
+              <List
+                items={keywords}
+                renderItem={(keyword) => {
+                  const { isProcessed } = keyword
+
+                  return (
+                    <tr key={keyword.id}>
+                      <td>{keyword.id}</td>
+                      <td>{keyword.keyword}</td>
+                      <td>{renderCellItem(isProcessed, keyword.totalLinks)}</td>
+                      <td>{renderCellItem(isProcessed, keyword.adWordsCount)}</td>
+                      <td>{renderCellItem(isProcessed, keyword.resultsCount)}</td>
+                      <td>{renderCellItem(isProcessed, keyword.executionTime)}</td>
+                      <td>
+                        {renderPreview(isProcessed, keyword.htmlPreview, Skeleton, (preview) => (
+                          <Button target='_blank' href={preview} variant='success'>
+                            View
+                          </Button>
+                        ))}
+                      </td>
+                      <td>
+                        <Button variant={keyword.isProcessed ? 'success' : 'secondary'}>
+                          {keyword.isProcessed ? 'Done' : 'Queued'}
+                        </Button>
+                      </td>
+                    </tr>
+                  )
+                }}
+              />
             </tbody>
           </Table>
         </Card>

@@ -20,9 +20,12 @@ export default defineConfig({
   resolve: {
     alias: {
       '@api': '/src/api',
+      '@lib': '/src/lib',
       '@pages': '/src/pages',
       '@hooks': '/src/hooks',
       '@assets': '/src/assets',
+      '@context': '/src/context',
+      '@constants': '/src/constants',
       '@interfaces': '/src/interfaces',
       '@components': '/src/components',
     },
