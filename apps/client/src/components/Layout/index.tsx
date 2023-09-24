@@ -32,7 +32,7 @@ const Layout = ({ children }: IProps) => {
               {!auth.authenticated ? (
                 <Nav.Link href='#'>Guest</Nav.Link>
               ) : (
-                <NavDropdown title={auth.user?.username ?? 'Guest'} menuVariant='dark'>
+                <NavDropdown title={auth.user!.username} menuVariant='dark'>
                   <NavDropdown.Item onClick={auth.deAuthenticate}>Logout</NavDropdown.Item>
                 </NavDropdown>
               )}

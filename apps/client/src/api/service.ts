@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { ILoginForm, IRegisterForm } from '@interfaces/form'
 import axiosInstance from '../lib/axios'
 import { isAxiosError } from 'axios'
@@ -16,21 +15,17 @@ interface IRegisterResponse {
   error?: string
 }
 
-const getErrorMessage = (error: unknown) => {
-  if (isAxiosError(error) && (error.response?.status === 401 || error.response?.status === 400)) {
-    const payload = error.response.data
-    return { error: payload.error as string }
-  } else {
-    return { error: 'Something went wrong' }
-  }
-}
-
 const login = async (formData: ILoginForm) => {
   try {
     const response = await axiosInstance.post('/auth/local', formData)
     return response.data as ILoginResponse
   } catch (error) {
-    return getErrorMessage(error)
+    if (isAxiosError(error) && (error.response?.status === 401 || error.response?.status === 400)) {
+      const payload = error.response.data
+      return { error: payload.error as string }
+    } else {
+      return { error: 'Something went wrong' }
+    }
   }
 }
 
