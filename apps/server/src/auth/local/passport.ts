@@ -11,7 +11,13 @@ const verifyUser = async (email: string, password: string, done: TDoneCallback) 
     const isValid = models.User.verifyPassword(password, user.passwordHash)
     if (!isValid) return done(undefined, false, { message: 'Invalid Password' })
 
-    return done(null, user)
+    const sanitizedUser = {
+      id: user.id,
+      email: user.email,
+      username: user.username,
+    }
+
+    return done(null, sanitizedUser)
   } catch (err) {
     return done(err, false)
   }

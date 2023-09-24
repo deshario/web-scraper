@@ -28,7 +28,6 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
           .status(401)
           .json({ success: false, error: info?.message || 'Invalid credentials' })
       }
-
       req.user = user
       return next()
     },
@@ -38,7 +37,7 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
 export const validateRefreshToken = (req: Request, res: Response, next: NextFunction) => {
   const payload = verifyRefreshToken(req.body.refreshToken)
   if (payload) {
-    req.user = { id: payload.id, email: payload.email }
+    req.user = { id: payload.id, username: payload.username, email: payload.email }
     return next()
   } else {
     return res.status(401).json({ success: false, error: 'Invalid refresh token' })
