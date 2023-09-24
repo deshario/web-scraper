@@ -32,14 +32,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setLoading(false)
   }, [])
 
+  const showNotification = (message: string) => {
+    setNotification(message)
+    setTimeout(() => setNotification(''), 3000)
+  }
+
   const authenticate = async (formData: ILoginForm) => {
     const result = await apiService.login(formData)
     if ('error' in result) {
-      setNotification(result.error)
-      setTimeout(() => setNotification(''), 3000)
+      showNotification(result.error)
     } else {
       setAuthenticated(true)
       setUser(result.user)
+      showNotification(`Welcome ${result.user.username}`)
       localStorage.setItem('scUser', JSON.stringify(result.user))
       localStorage.setItem('scAccessToken', result.accessToken)
       localStorage.setItem('scRefreshToken', result.refreshToken)
@@ -48,9 +53,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const register = async (formData: IRegisterForm) => {
     const result = await apiService.register(formData)
-    const message = result.success ? 'Register Success' : result.error || ' went wrong'
-    setNotification(message)
-    setTimeout(() => setNotification(''), 3000)
+    const message = result.success ? 'Register Success' : result.error
+    if (message) showNotification(message)
   }
 
   const deAuthenticate = () => {
