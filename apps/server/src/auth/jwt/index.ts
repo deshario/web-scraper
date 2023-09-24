@@ -9,8 +9,7 @@ router.post(
   '/refresh',
   [validateSchema(refreshTokenSchema), validateRefreshToken],
   (req: Request, res: Response) => {
-    const payload = { id: req.user!.id, email: req.user!.email }
-    const accessToken = signAccessToken(payload)
+    const accessToken = signAccessToken(req.user!)
     res.json({ success: true, accessToken })
   },
 )

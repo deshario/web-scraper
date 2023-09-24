@@ -1,6 +1,6 @@
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
-import { IRegisterForm } from 'src/interfaces'
+import { IRegisterForm } from '@interfaces/form'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
@@ -33,7 +33,9 @@ const RegisterForm = ({ onSubmit }: IForm) => {
     initialValues,
     validationSchema,
     onSubmit: (values) => {
-      onSubmit(values)
+      // eslint-disable-next-line
+      const { confirmPassword, ...rest } = values
+      onSubmit(rest)
     },
   })
 

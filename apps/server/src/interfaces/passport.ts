@@ -11,8 +11,9 @@ export type TExpressAuthInfo = {
 export type TJwtPayload = {
   id: number
   email: string
+  username: string
   iat: number
   exp: number
 }
 
-export type TJwtSignPayload = Pick<TJwtPayload, 'id' | 'email'>
+export type TJwtSignPayload = Pick<TJwtPayload, 'id' | 'email' | 'username'>
