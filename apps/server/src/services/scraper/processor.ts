@@ -1,11 +1,12 @@
+import fs from 'fs'
+import path from 'path'
+import * as cheerio from 'cheerio'
 import { Job } from 'bull'
 import { TKeywordPayload, TKeywordProcessor, TKeywordResult } from '../../interfaces'
 import { saveResults } from './saveResults'
 import { scrapeGoogleSearch } from './scraper'
 import { getExecutionResult, getRandomDelay, getRandomString } from '../../utils'
-import * as cheerio from 'cheerio'
-import path from 'path'
-import fs from 'fs'
+import { syncKeywords } from '../socket'
 
 const scrapeKeywordData = async (
   uploader: number,
@@ -38,7 +39,7 @@ const scrapeKeywordData = async (
 
 export const processKeyword = async (job: Job<TKeywordProcessor>) => {
   try {
-    const { ownerId, payload } = job.data
+    const { ownerId, ownerName, payload } = job.data
     console.log(`Scrapping Job: [${job.id}]`)
 
     const scrapedResults: TKeywordResult[] = []
@@ -53,6 +54,8 @@ export const processKeyword = async (job: Job<TKeywordProcessor>) => {
       }
       await new Promise((resolve) => setTimeout(resolve, getRandomDelay()))
     }
+
+    syncKeywords(ownerName, scrapedResults)
 
     await saveResults(scrapedResults)
 

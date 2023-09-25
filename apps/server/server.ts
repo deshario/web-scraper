@@ -2,11 +2,14 @@ import express from 'express'
 import helmet from 'helmet'
 import passport from 'passport'
 import cors from 'cors'
+import http from 'http'
 import routes from './src/routes'
 import Connection from './src/db/connection'
 import env from './src/config/environment'
+import { initSocket } from './src/services'
 
 const app = express()
+const server = http.createServer(app)
 
 app.use(helmet())
 app.use(cors())
@@ -17,6 +20,8 @@ app.use(routes)
 
 Connection.connect()
 
-app.listen(env.express.port, () => {
+initSocket(server)
+
+server.listen(env.express.port, () => {
   console.log(`\n⚡️Server running at ${env.express.port}\n`)
 })

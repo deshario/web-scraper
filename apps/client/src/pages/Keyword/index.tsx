@@ -8,11 +8,14 @@ import Card from 'react-bootstrap/Card'
 import Table from 'react-bootstrap/Table'
 import Spinner from 'react-bootstrap/Spinner'
 import Uploader from '@components/Modal/Uploader'
+import useSocket from '@hooks/useSocket'
 
 const Skeleton = <Spinner animation='border' variant='primary' />
 
 const KeywordPage = () => {
-  const [keywords, renderCell, renderPreview, refreshList] = useKeyword()
+  const { keywords, renderCell, renderPreview, refreshList, patchKeywords } = useKeyword()
+
+  useSocket({ patchKeywords })
 
   const renderCellItem = useCallback(
     (isProcessed: boolean, value: number | string | undefined) => {
