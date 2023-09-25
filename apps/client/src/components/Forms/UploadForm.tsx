@@ -16,11 +16,11 @@ const UploadForm = ({ onSelectFile }: IFileSelect) => {
 
   return (
     <Form>
-      <Form.Group className='mb-3' controlId='exampleForm.ControlInput1'>
+      <Form.Group className='mb-3'>
         <Form.Label>Uploader</Form.Label>
         <Form.Control type='email' value={auth.user?.email} disabled />
       </Form.Group>
-      <Form.Group controlId='formFileDisabled' className='mb-3'>
+      <Form.Group className='mb-3'>
         <Form.Label>CSV file</Form.Label>
         <Form.Control type='file' accept='text/csv, application/csv' onChange={handleFileChange} />
         <Form.Text id='passwordHelpBlock' muted>
