@@ -1,7 +1,7 @@
 import apiService from '@api/service'
 import { baseURL } from '@constants/index'
 import { TKeyword } from '@interfaces/keyword'
-import { ReactNode, useEffect, useState } from 'react'
+import { useEffect, useState, useCallback, ReactNode } from 'react'
 
 type TRenderCellFunction = (
   processed: boolean,
@@ -16,12 +16,7 @@ type TRenderButtonFunction = (
   render: (link: string) => ReactNode,
 ) => ReactNode
 
-export const useKeyword = (): [
-  TKeyword[],
-  TRenderCellFunction,
-  TRenderButtonFunction,
-  () => void,
-] => {
+export const useKeyword = () => {
   const [keywords, setKeywords] = useState<TKeyword[]>([])
 
   const renderCell: TRenderCellFunction = (processed, value, skeleton) => {
@@ -38,9 +33,32 @@ export const useKeyword = (): [
     apiService.getKeywords().then(setKeywords)
   }
 
+  const patchKeywords = useCallback(
+    (payload: string) => {
+      try {
+        const changedKeywords: TKeyword[] = JSON.parse(payload)
+        const latestKeywords = keywords.map((keyword) => {
+          const changedKeyword = changedKeywords.find((newItems) => newItems.id === keyword.id)
+          return { ...keyword, ...changedKeyword }
+        })
+        setKeywords(latestKeywords)
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.warn('[patchKeywords]', err)
+      }
+    },
+    [keywords],
+  )
+
   useEffect(() => {
     fetchKeywords()
   }, [])
 
-  return [keywords, renderCell, renderPreview, fetchKeywords]
+  return {
+    keywords,
+    renderCell,
+    renderPreview,
+    patchKeywords,
+    refreshList: fetchKeywords,
+  }
 }

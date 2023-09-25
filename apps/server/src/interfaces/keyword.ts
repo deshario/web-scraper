@@ -18,5 +18,6 @@ export type TKeywordResult = TKeyword & { id: number }
 
 export type TKeywordProcessor = {
   ownerId: number
+  ownerName: string
   payload: TKeywordPayload[]
 }
