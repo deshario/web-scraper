@@ -16,23 +16,39 @@ interface IRegisterResponse {
   error?: string
 }
 
+interface IErrorResponse {
+  error: string
+  success: boolean
+}
+
 const login = async (formData: ILoginForm) => {
   try {
     const response = await axiosInstance.post('/auth/local', formData)
     return response.data as ILoginResponse
   } catch (error) {
-    if (isAxiosError(error) && error.response?.status === 400) {
-      const payload = error.response.data
-      return { error: payload.error as string }
-    } else {
-      return { error: 'Something went wrong' }
+    if (isAxiosError(error)) {
+      const errorResponse: IErrorResponse = error.response?.data
+      if (errorResponse) {
+        return { error: errorResponse.error }
+      }
     }
+    throw error
   }
 }
 
 const register = async (formData: IRegisterForm) => {
-  const response = await axiosInstance.post('/auth/local/register', formData)
-  return response.data as IRegisterResponse
+  try {
+    const response = await axiosInstance.post('/auth/local/register', formData)
+    return response.data as IRegisterResponse
+  } catch (error) {
+    if (isAxiosError(error)) {
+      const errorResponse: IErrorResponse = error.response?.data
+      if (errorResponse) {
+        return { error: errorResponse.error }
+      }
+    }
+    throw error
+  }
 }
 
 const getKeywords = async () => {

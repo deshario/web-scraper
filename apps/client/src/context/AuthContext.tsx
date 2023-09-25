@@ -54,8 +54,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const register = async (formData: IRegisterForm) => {
     const result = await apiService.register(formData)
-    const message = result.success ? 'Register Success' : result.error
-    if (message) showNotification(message)
+    const message = result.error || 'Register Success'
+    showNotification(message)
   }
 
   const deAuthenticate = () => {
