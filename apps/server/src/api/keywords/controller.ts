@@ -9,7 +9,7 @@ const getKeywords = async (req: Request, res: Response) => {
     const user = await models.User.findOne({
       where: { id: req.user?.id },
     })
-    const keywords = user ? await user.getKeywords() : []
+    const keywords = user ? await user.getKeywords({ order: [['id', 'DESC']] }) : []
     return res.json({ success: true, keywords })
   } catch (err) {
     return res.json({ success: false, error: getErrorMsg(err) })
