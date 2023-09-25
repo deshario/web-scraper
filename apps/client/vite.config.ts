@@ -8,11 +8,7 @@ export default defineConfig({
   plugins: [react(), sassDts()],
   server: {
     port: 3000,
-    host: true,
-    strictPort: true,
-    watch: {
-      usePolling: true,
-    },
+    open: true,
   },
   test: {
     globals: true,
