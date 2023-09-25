@@ -7,11 +7,12 @@ import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Table from 'react-bootstrap/Table'
 import Spinner from 'react-bootstrap/Spinner'
+import Uploader from '@components/Modal/Uploader'
 
 const Skeleton = <Spinner animation='border' variant='primary' />
 
 const KeywordPage = () => {
-  const [keywords, renderCell, renderPreview] = useKeyword()
+  const [keywords, renderCell, renderPreview, refreshList] = useKeyword()
 
   const renderCellItem = useCallback(
     (isProcessed: boolean, value: number | string | undefined) => {
@@ -26,9 +27,7 @@ const KeywordPage = () => {
         <Card>
           <Card.Header className='d-flex p-3'>
             <h4>Keywords</h4>
-            <Button variant='secondary' size='sm' className='ms-3'>
-              Upload
-            </Button>
+            <Uploader onComplete={refreshList} />
           </Card.Header>
           <Table responsive striped bordered hover style={{ marginBottom: 0 }}>
             <thead>

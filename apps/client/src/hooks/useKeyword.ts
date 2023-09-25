@@ -16,7 +16,12 @@ type TRenderButtonFunction = (
   render: (link: string) => ReactNode,
 ) => ReactNode
 
-export const useKeyword = (): [TKeyword[], TRenderCellFunction, TRenderButtonFunction] => {
+export const useKeyword = (): [
+  TKeyword[],
+  TRenderCellFunction,
+  TRenderButtonFunction,
+  () => void,
+] => {
   const [keywords, setKeywords] = useState<TKeyword[]>([])
 
   const renderCell: TRenderCellFunction = (processed, value, skeleton) => {
@@ -29,9 +34,13 @@ export const useKeyword = (): [TKeyword[], TRenderCellFunction, TRenderButtonFun
     return value ? render(preview) : processed ? '-' : skeleton
   }
 
-  useEffect(() => {
+  const fetchKeywords = () => {
     apiService.getKeywords().then(setKeywords)
+  }
+
+  useEffect(() => {
+    fetchKeywords()
   }, [])
 
-  return [keywords, renderCell, renderPreview]
+  return [keywords, renderCell, renderPreview, fetchKeywords]
 }

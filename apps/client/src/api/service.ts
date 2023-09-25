@@ -21,6 +21,11 @@ interface IErrorResponse {
   success: boolean
 }
 
+interface IUploadResponse {
+  success: boolean
+  error?: string
+}
+
 const login = async (formData: ILoginForm) => {
   try {
     const response = await axiosInstance.post('/auth/local', formData)
@@ -62,6 +67,22 @@ const getKeywords = async () => {
   }
 }
 
-const apiService = { login, register, getKeywords }
+const uploadKeyword = async (file: File) => {
+  try {
+    const formData = new FormData()
+    formData.append('csv', file)
+    const response = await axiosInstance.post('/api/keywords/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    const data = response.data as IUploadResponse
+    return data.success
+  } catch (err) {
+    return false
+  }
+}
+
+const apiService = { login, register, getKeywords, uploadKeyword }
 
 export default apiService
