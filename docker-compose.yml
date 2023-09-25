@@ -1,0 +1,35 @@
+services:
+  redis:
+    image: "redis:latest"
+
+  postgres:
+    image: "postgres:latest"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: deshario
+      POSTGRES_PASSWORD: deshario
+      POSTGRES_DB: deshario
+
+  server:
+    build:
+      context: ./apps/server
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+      - postgres
+    environment:
+      DB_HOST: localhost
+      DB_USER: deshario
+      DB_PASSWORD: deshario
+      DB_NAME: deshario
+      REDIS_URL: redis://localhost:6379
+
+  client:
+    build:
+      context: ./apps/client
+    ports:
+      - "3000:3000"
+    depends_on:
+      - server
