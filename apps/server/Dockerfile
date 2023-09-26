@@ -1,7 +1,5 @@
 FROM node:16-alpine
 
-# ENV DB_HOST=postgres
-
 WORKDIR /app/server
 
 COPY package.json  .

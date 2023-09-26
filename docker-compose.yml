@@ -1,15 +1,30 @@
+version: "3.7"
 services:
   redis:
     image: "redis:latest"
+    restart: always
 
   postgres:
-    image: "postgres:latest"
+    image: postgres:latest
+    restart: always
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: deshario
-      POSTGRES_PASSWORD: deshario
-      POSTGRES_DB: deshario
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=toor
+      - POSTGRES_DB=scraper
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    depends_on:
+      - postgres
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@root.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
 
   server:
     build:
@@ -19,12 +34,16 @@ services:
     depends_on:
       - redis
       - postgres
+    ports:
+      - "8080:8080"
     environment:
-      DB_HOST: localhost
-      DB_USER: deshario
-      DB_PASSWORD: deshario
-      DB_NAME: deshario
+      DB_HOST: postgres
+      DB_USER: root
+      DB_PASSWORD: toor
+      DB_NAME: scraper
       REDIS_URL: redis://localhost:6379
+    volumes:
+      - ./server-data:/app/data
 
   client:
     build:
