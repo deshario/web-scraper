@@ -11,17 +11,7 @@ interface ILoginResponse {
   user: IUser
 }
 
-interface IRegisterResponse {
-  success: boolean
-  error?: string
-}
-
-interface IErrorResponse {
-  error: string
-  success: boolean
-}
-
-interface IUploadResponse {
+interface IResponse {
   success: boolean
   error?: string
 }
@@ -32,7 +22,7 @@ const login = async (formData: ILoginForm) => {
     return response.data as ILoginResponse
   } catch (error) {
     if (isAxiosError(error)) {
-      const errorResponse: IErrorResponse = error.response?.data
+      const errorResponse: IResponse = error.response?.data
       if (errorResponse) {
         return { error: errorResponse.error }
       }
@@ -44,10 +34,10 @@ const login = async (formData: ILoginForm) => {
 const register = async (formData: IRegisterForm) => {
   try {
     const response = await axiosInstance.post('/auth/local/register', formData)
-    return response.data as IRegisterResponse
+    return response.data as IResponse
   } catch (error) {
     if (isAxiosError(error)) {
-      const errorResponse: IErrorResponse = error.response?.data
+      const errorResponse: IResponse = error.response?.data
       if (errorResponse) {
         return { error: errorResponse.error }
       }
@@ -76,7 +66,7 @@ const uploadKeyword = async (file: File) => {
         'Content-Type': 'multipart/form-data',
       },
     })
-    const data = response.data as IUploadResponse
+    const data = response.data as IResponse
     return data.success
   } catch (err) {
     return false

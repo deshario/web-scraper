@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const authenticate = async (formData: ILoginForm) => {
     const result = await apiService.login(formData)
     if ('error' in result) {
-      showNotification(result.error)
+      showNotification(result.error!)
     } else {
       setAuthenticated(true)
       setUser(result.user)
