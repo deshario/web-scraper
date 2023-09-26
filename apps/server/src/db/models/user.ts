@@ -63,11 +63,11 @@ class User extends Model implements TUser {
       })
       return user
     } catch (error) {
-      throw error
+      return null
     }
   }
 
-  static async signUp(username: string, email: string, password: string): Promise<User> {
+  static async signUp(username: string, email: string, password: string): Promise<User | null> {
     try {
       const salt = bcrypt.genSaltSync()
       const passwordHash = bcrypt.hashSync(password, salt)
@@ -79,7 +79,7 @@ class User extends Model implements TUser {
       })
       return newUser
     } catch (error) {
-      throw error
+      return null
     }
   }
 

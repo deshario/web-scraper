@@ -22,7 +22,12 @@ const UploadForm = ({ onSelectFile }: IFileSelect) => {
       </Form.Group>
       <Form.Group className='mb-3'>
         <Form.Label>CSV file</Form.Label>
-        <Form.Control type='file' accept='text/csv, application/csv' onChange={handleFileChange} />
+        <Form.Control
+          type='file'
+          aria-label='file'
+          accept='text/csv, application/csv'
+          onChange={handleFileChange}
+        />
         <Form.Text muted>
           <a href={sampleCSV} target='_blank'>
             View sample

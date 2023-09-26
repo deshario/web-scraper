@@ -7,7 +7,7 @@
     "dev": "ts-node-dev --respawn --transpile-only server.ts",
     "lint": "eslint src/**/*.ts",
     "format": "prettier --write ./src",
-    "test": "jest --coverage",
+    "test": "jest --coverage --watchAll --detectOpenHandles",
     "pre-commit": "npx lint-staged",
     "migrate": "sequelize db:migrate",
     "migration-undo": "sequelize db:migrate:undo",
@@ -49,6 +49,7 @@
     "lint-staged": "^14.0.1",
     "prettier": "^3.0.3",
     "sequelize-cli": "^6.6.1",
+    "sqlite3": "^5.1.6",
     "ts-jest": "^29.1.1",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.2.2"
