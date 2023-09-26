@@ -10,8 +10,8 @@ COPY . .
 
 RUN yarn add ts-node-dev
 
-RUN yarn migrate
+# RUN yarn migrate
 
 EXPOSE 8080
 
-CMD ["yarn", "dev"]
+# CMD ["yarn", "dev"]
