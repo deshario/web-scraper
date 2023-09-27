@@ -86,8 +86,8 @@ Also you may want to take a look at `apps/server/src/config/environment.ts`, whi
 
 #### Preview
 
-[View Demo](https://vimeo.com/868622929?share=copy)
-[Download sample CSV File](https://gist.github.com/deshario/c5e507d593c4d8a667a531b74239e2a0)
+- [View Demo](https://vimeo.com/868622929?share=copy)
+- [Download sample CSV File](https://gist.github.com/deshario/c5e507d593c4d8a667a531b74239e2a0)
 
 ### What's Next
 
