@@ -94,5 +94,5 @@ Also you may want to take a look at `apps/server/src/config/environment.ts`, whi
 - **Pagination & Filters**
 - **Proxy rotation**
 - **Dockerize**
-  -- _Todo: Fix the configuration to ensure that all services can communicate with each_
+  - _Todo: Fix the configuration to ensure that all services can communicate with each other_
 - **Deployment**
