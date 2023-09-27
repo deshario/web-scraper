@@ -18,6 +18,16 @@ Once the background job for a particular keyword chunk is complete, the results 
 
 ---
 
+### Scraping Techniques
+
+- **User Agents**: Apply a random user agent header in request to make it look like a web browser
+- **Delays:** Apply random delays between requests to avoid rate limiting
+- **Proxies**: An effective approach to avoid getting blocked is to use a pool of proxies that rotate randomly for requests
+
+Note: Proxies are not being used at the moment, but they are worth considering for future implementation.
+
+---
+
 ### Requirements
 
 Before you run the application, please make sure you have the following tools and services installed and properly configured on your system:
@@ -29,11 +39,11 @@ Before you run the application, please make sure you have the following tools an
 
 Before you run the application, it's important to configure your environment variables. To do this, simply create a `.env` file in the root directory of the `apps/server`, using the provided `.env.example` file as a reference. Below are the environment variables that require configuration:
 
-`DB_HOST`: Postgres host
-`DB_NAME`: Postgres database name
-`DB_USER`: Postgres username
-`DB_PASSWORD`: Postgres password
-`REDIS_URL`: Redis connection string
+- `DB_HOST`: Postgres host
+- `DB_NAME`: Postgres database name
+- `DB_USER`: Postgres username
+- `DB_PASSWORD`: Postgres password
+- `REDIS_URL`: Redis connection string
 
 Also you may want to take a look at `apps/server/src/config/environment.ts`, which can provide hints about certain variables that can be skipped in your `.env` file because they already have fallback values defined in the application's configuration. This can be helpful in determining which variables are **required** and which ones can be **omitted**
 
@@ -42,22 +52,26 @@ Also you may want to take a look at `apps/server/src/config/environment.ts`, whi
 ### Run project
 
 1. Install dependencies
-   `yarn`
+
+   - `yarn`
 
 2. Run migration
-   `yarn migrate`
+
+   - `yarn migrate`
 
 3. Start redis server
-   `redis-server`
+
+   - `redis-server`
 
 4. Run client/server in parallel
-   `yarn dev`
+
+   - `yarn dev`
 
 5. Enjoy
-   Client: http://localhost:3000
-   Server: http://localhost:8080
+   - Client: http://localhost:3000
+   - Server: http://localhost:8080
 
-# API
+### API
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/1566031-06f7635e-224f-4ca6-8e20-0b042f176f55?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D1566031-06f7635e-224f-4ca6-8e20-0b042f176f55%26entityType%3Dcollection%26workspaceId%3D4c9a5645-9212-4322-8cc2-1efedeb941ff)
 
@@ -69,3 +83,12 @@ Also you may want to take a look at `apps/server/src/config/environment.ts`, whi
 | `GET`  | `/api/keywords`       | Get keywords           |
 | `POST` | `/api/keywords`       | Upload keywords        |
 | `GET`  | `/api/keywords/:key`  | Preview single keyword |
+
+#### Preview
+
+[View Demo](https://vimeo.com/868622929?share=copy)
+
+### What's Next
+
+- Implement proxies
+- Dockerize and deployment

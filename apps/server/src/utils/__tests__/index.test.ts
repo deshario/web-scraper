@@ -81,9 +81,8 @@ describe('Utility Functions', () => {
   describe('getRandomDelay', () => {
     test('should return a random delay within the specified range', () => {
       const minDelay = 1000
-      const maxDelay = 5000
-
-      const result = getRandomDelay(maxDelay)
+      const maxDelay = 4000
+      const result = getRandomDelay()
 
       expect(result).toBeGreaterThanOrEqual(minDelay)
       expect(result).toBeLessThanOrEqual(maxDelay)

@@ -13,11 +13,11 @@ module.exports = {
         allowNull: true,
       }),
       queryInterface.addColumn('Keywords', 'resultsCount', {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: true,
       }),
       queryInterface.addColumn('Keywords', 'executionTime', {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DECIMAL(10, 2),
         allowNull: true,
       }),
       queryInterface.addColumn('Keywords', 'htmlPreview', {

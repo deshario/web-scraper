@@ -17,7 +17,7 @@ const scrapeKeywordData = async (
     const html = await scrapeGoogleSearch(payload.keyword)
     const $ = cheerio.load(html)
     const totalLinks = $('body a').length
-    const adWordsCount = $('#tads').length
+    const adWordsCount = $('.uEierd').length // #tads | #uEierd
     const stats = $('#result-stats').text()
     const { resultsCount, executionTime } = getExecutionResult(stats)
 
@@ -40,10 +40,11 @@ const scrapeKeywordData = async (
 export const processKeyword = async (job: Job<TKeywordProcessor>) => {
   try {
     const { ownerId, ownerName, payload } = job.data
-    console.log(`Scrapping Job: [${job.id}]`)
+    console.log(`Job: [${job.id}]`)
 
     const scrapedResults: TKeywordResult[] = []
     for (const keyword of payload) {
+      console.log(`Processing: ${keyword.keyword}`)
       const result = await scrapeKeywordData(ownerId, keyword)
       if (result) {
         scrapedResults.push(result)
@@ -52,12 +53,16 @@ export const processKeyword = async (job: Job<TKeywordProcessor>) => {
         await fs.writeFileSync(pagesDir, result.htmlPreview!)
         result.htmlPreview = fileName
       }
+      // Quick delay between 100ms - 400ms
       await new Promise((resolve) => setTimeout(resolve, getRandomDelay()))
     }
 
     syncKeywords(ownerName, scrapedResults)
 
     await saveResults(scrapedResults)
+
+    // Longer delay between 1000ms - 4000ms
+    await new Promise((resolve) => setTimeout(resolve, getRandomDelay(false)))
 
     return Promise.resolve(scrapedResults)
   } catch (err) {
