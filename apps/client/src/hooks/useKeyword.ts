@@ -25,7 +25,7 @@ export const useKeyword = () => {
 
   const renderPreview: TRenderButtonFunction = (processed, value, skeleton, render) => {
     const html = value?.replace(/.html/, '')
-    const preview = `${baseURL}/api/keywords/preview/${html}`
+    const preview = `${baseURL}/api/keywords/${html}`
     return value ? render(preview) : processed ? '-' : skeleton
   }
 

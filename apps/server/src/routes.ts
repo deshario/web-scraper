@@ -6,8 +6,8 @@ import keywords from './api/keywords'
 const router = express.Router()
 
 router.use('/auth', auth)
-router.use('/api/keywords', keywords)
 router.use('/api/users', users)
+router.use('/api/keywords', keywords)
 
 router.get('/', (req, res) => {
   res.json({ timestamp: new Date().getTime() })
