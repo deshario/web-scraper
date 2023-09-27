@@ -2,11 +2,11 @@
 
 #### Keyword Upload
 
-Users upload a CSV file containing keywords using the app's interface. This CSV file serves as the input data for further processing.
+Users upload a [CSV file](https://gist.github.com/deshario/c5e507d593c4d8a667a531b74239e2a0) containing keywords using the app's interface. This CSV file serves as the input data for further processing.
 
 #### Job Splitting
 
-After the CSV file is being uploaded, the backend will split the keywords into multiple chunks to create a multiple jobs to be processed separately. This step is important to make sure things get done quickly and efficiently
+After the [CSV file](https://gist.github.com/deshario/c5e507d593c4d8a667a531b74239e2a0) is being uploaded, the backend will split the keywords into multiple chunks to create a multiple jobs to be processed separately. This step is important to make sure things get done quickly and efficiently
 
 #### Job Processing
 
@@ -37,7 +37,7 @@ Before you run the application, please make sure you have the following tools an
 
 ### Environment variables
 
-Before you run the application, it's important to configure your environment variables. To do this, simply create a `.env` file in the root directory of the `apps/server`, using the provided `.env.example` file as a reference. Below are the environment variables that require configuration:
+Before you run the application, it's important to configure environment variables. To do this, simply create a `.env` file in the root directory of the `apps/server`, using the provided `.env.example` file as a reference
 
 - `DB_HOST`: Postgres host
 - `DB_NAME`: Postgres database name
@@ -87,8 +87,12 @@ Also you may want to take a look at `apps/server/src/config/environment.ts`, whi
 #### Preview
 
 [View Demo](https://vimeo.com/868622929?share=copy)
+[Download sample CSV File](https://gist.github.com/deshario/c5e507d593c4d8a667a531b74239e2a0)
 
 ### What's Next
 
-- Implement proxies
-- Dockerize and deployment
+- **Pagination & Filters**
+- **Proxy rotation**
+- **Dockerize**
+  -- _Todo: Fix the configuration to ensure that all services can communicate with each_
+- **Deployment**
