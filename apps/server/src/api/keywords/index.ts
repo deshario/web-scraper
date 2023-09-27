@@ -16,11 +16,7 @@ const upload = multer({
 })
 
 router.get('/', checkAuthentication, keywordsController.getKeywords)
-router.get('/preview/:key', keywordsController.getPreview)
-router.post(
-  '/upload',
-  [checkAuthentication, upload.single('csv')],
-  keywordsController.uploadKeywords,
-)
+router.get('/:key', keywordsController.getPreview)
+router.post('/', [checkAuthentication, upload.single('csv')], keywordsController.uploadKeywords)
 
 export default router

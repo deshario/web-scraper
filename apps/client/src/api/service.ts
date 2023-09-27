@@ -61,7 +61,7 @@ const uploadKeyword = async (file: File) => {
   try {
     const formData = new FormData()
     formData.append('csv', file)
-    const response = await axiosInstance.post('/api/keywords/upload', formData, {
+    const response = await axiosInstance.post('/api/keywords', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
