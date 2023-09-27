@@ -47,8 +47,9 @@ export const getRandomAgent = () => {
   return userAgents[random]
 }
 
-export const getRandomDelay = (maxDelay = 5000) => {
-  const minDelay = 1000
-  const randomDelay = Math.random() * (maxDelay - minDelay) + minDelay
+export const getRandomDelay = (isQuickDelay = false) => {
+  const minDelayMS = isQuickDelay ? 100 : 1000
+  const maxDelayMS = isQuickDelay ? 400 : 4000
+  const randomDelay = Math.random() * (maxDelayMS - minDelayMS) + minDelayMS
   return Math.floor(randomDelay)
 }

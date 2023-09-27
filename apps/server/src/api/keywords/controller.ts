@@ -34,7 +34,7 @@ const uploadKeywords = async (req: Request, res: Response) => {
 
     const savedKeywords = await models.Keyword.bulkCreate(payload)
     const keywordsWithId = savedKeywords.map(({ id, keyword }) => ({ id, keyword }))
-    const chunks = splitArrToChunks(keywordsWithId, 10)
+    const chunks = splitArrToChunks(keywordsWithId, 5) // 5 keywords per job
     const addToQueue = chunks.map((chunk) =>
       addKeywordsToQueue({
         ownerId: userId,
