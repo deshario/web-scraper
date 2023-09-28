@@ -1,6 +1,7 @@
 import { Model, DataTypes, Sequelize } from 'sequelize'
 import { TKeyword } from '../../interfaces'
 import Users from './user'
+import KeywordContent from './content'
 
 class Keyword extends Model implements TKeyword {
   declare id: number
@@ -10,7 +11,7 @@ class Keyword extends Model implements TKeyword {
   declare adWordsCount: number
   declare resultsCount: string
   declare executionTime: number
-  declare htmlPreview: string
+  declare contentId: number
   declare isProcessed: boolean
 
   static initModel(sequelize: Sequelize): void {
@@ -26,15 +27,15 @@ class Keyword extends Model implements TKeyword {
           allowNull: false,
         },
         uploader: {
-          type: DataTypes.NUMBER,
+          type: DataTypes.INTEGER,
           allowNull: false,
         },
         totalLinks: {
-          type: DataTypes.NUMBER,
+          type: DataTypes.INTEGER,
           allowNull: true,
         },
         adWordsCount: {
-          type: DataTypes.NUMBER,
+          type: DataTypes.INTEGER,
           allowNull: true,
         },
         resultsCount: {
@@ -45,8 +46,8 @@ class Keyword extends Model implements TKeyword {
           type: DataTypes.DECIMAL(10, 2),
           allowNull: true,
         },
-        htmlPreview: {
-          type: DataTypes.TEXT,
+        contentId: {
+          type: DataTypes.INTEGER,
           allowNull: true,
         },
         isProcessed: {
@@ -67,6 +68,11 @@ class Keyword extends Model implements TKeyword {
     Keyword.belongsTo(Users, {
       foreignKey: 'uploader',
       as: 'users',
+    })
+
+    Keyword.hasOne(KeywordContent, {
+      foreignKey: 'keywordId',
+      as: 'content',
     })
   }
 }

@@ -1,8 +1,7 @@
 import { Request, Response } from 'express'
 import { models } from '../../db/models'
-import { extractNonce, getErrorMsg } from '../../utils'
+import { getErrorMsg } from '../../utils'
 import { addKeywordToQueue } from '../../services'
-import path from 'path'
 
 const getKeywords = async (req: Request, res: Response) => {
   try {
@@ -51,13 +50,12 @@ const uploadKeywords = async (req: Request, res: Response) => {
 
 const getPreview = async (req: Request, res: Response) => {
   try {
-    const html = path.join(__dirname, `../../pages/${req.params.key}.html`)
-    const nonce = extractNonce(html)
-
-    return res
-      .set('Content-Type', 'text/html')
-      .setHeader('Content-Security-Policy', `script-src 'self' 'nonce-${nonce}'`)
-      .sendFile(html)
+    const keywordContent = await models.KeywordContent.findOne({ where: { id: req.params.id } })
+    if (!keywordContent) {
+      return res.json({ success: false })
+    }
+    const { htmlContent } = keywordContent
+    return res.json({ success: true, htmlContent })
   } catch (err) {
     return res.json({ success: false, error: getErrorMsg(err) })
   }

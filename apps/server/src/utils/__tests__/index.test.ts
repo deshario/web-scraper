@@ -1,14 +1,4 @@
-import fs from 'fs'
-import {
-  getErrorMsg,
-  extractNonce,
-  getRandomAgent,
-  getRandomDelay,
-  getRandomString,
-  getExecutionResult,
-} from '../index'
-
-const html = `<!doctype html><head><script nonce="123456789"></script><script nonce="123456789"></script></head></html>`
+import { getErrorMsg, getRandomAgent, getRandomDelay, getExecutionResult } from '../index'
 
 describe('Utility Functions', () => {
   describe('getExecutionResult', () => {
@@ -34,30 +24,6 @@ describe('Utility Functions', () => {
     test('should return a fallback error message', () => {
       const result = getErrorMsg('Some error')
       expect(result).toBe('Something went wrong')
-    })
-  })
-
-  describe('extractNonce', () => {
-    test('should return valid nonce from HTML content', () => {
-      jest.spyOn(fs, 'readFileSync').mockReturnValue(html)
-      const result = extractNonce(html)
-      expect(fs.readFileSync).toHaveBeenCalledWith(html, 'utf8')
-      expect(result).toBe('123456789')
-    })
-
-    test('should extract empty nonce from HTML content', () => {
-      jest.spyOn(fs, 'readFileSync').mockReturnValue('')
-      const result = extractNonce(html)
-      expect(fs.readFileSync).toHaveBeenCalledWith(html, 'utf8')
-      expect(result).toBe('')
-    })
-  })
-
-  describe('getRandomString', () => {
-    test('should return a random string', () => {
-      const result = getRandomString()
-      expect(typeof result).toBe('string')
-      expect(result.length).toBeGreaterThan(0)
     })
   })
 

@@ -1,10 +1,18 @@
-import { TKeywordResult } from '../../interfaces'
+import { TKeywordContent, TKeywordResult } from '../../interfaces'
 import { models } from '../../db/models'
 
-export const saveResult = async (result: TKeywordResult | null) => {
+export const saveResult = async (result: TKeywordResult) => {
   try {
-    const keyword = await models.Keyword.update({ ...result }, { where: { id: result?.id } })
-    return keyword
+    return await models.Keyword.update(result, { where: { id: result?.id } })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export const saveKeywordContent = async (content: TKeywordContent) => {
+  try {
+    const keywordContent = await models.KeywordContent.create(content)
+    return keywordContent.id
   } catch (err) {
     console.log(err)
   }

@@ -1,5 +1,3 @@
-import fs from 'fs'
-
 export const getExecutionResult = (resultsText = '') => {
   const regexPattern = /([\d,]+)\sresults\s\(([\d.]+)\sseconds\)/
   const match = regexPattern.exec(resultsText.trim())
@@ -12,17 +10,6 @@ export const getExecutionResult = (resultsText = '') => {
 
 export const getErrorMsg = (error: unknown) => {
   return error instanceof Error ? error.message : 'Something went wrong'
-}
-
-export const extractNonce = (html: string) => {
-  const content = fs.readFileSync(html, 'utf8')
-  const scriptTag = content.match(/<script[^>]*?nonce="([^"]*)"[^>]*>/g)
-  const nonce = scriptTag ? scriptTag[1].match(/nonce="([^"]*)"/)?.[1] : ''
-  return nonce
-}
-
-export const getRandomString = () => {
-  return (Math.random() + 1).toString(36).substring(3)
 }
 
 export const getRandomAgent = () => {
