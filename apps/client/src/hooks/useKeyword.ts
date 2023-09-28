@@ -11,7 +11,7 @@ type TRenderCellFunction = (
 
 type TRenderButtonFunction = (
   processed: boolean,
-  value: string | undefined,
+  value: number | undefined,
   skeleton: JSX.Element,
   render: (link: string) => ReactNode,
 ) => ReactNode
@@ -24,8 +24,7 @@ export const useKeyword = () => {
   }
 
   const renderPreview: TRenderButtonFunction = (processed, value, skeleton, render) => {
-    const html = value?.replace(/.html/, '')
-    const preview = `${baseURL}/api/keywords/${html}`
+    const preview = `${baseURL}/api/keywords/}`
     return value ? render(preview) : processed ? '-' : skeleton
   }
 

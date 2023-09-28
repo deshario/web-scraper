@@ -4,7 +4,6 @@ import {
   extractNonce,
   getRandomAgent,
   getRandomDelay,
-  getRandomString,
   getExecutionResult,
 } from '../index'
 
@@ -50,14 +49,6 @@ describe('Utility Functions', () => {
       const result = extractNonce(html)
       expect(fs.readFileSync).toHaveBeenCalledWith(html, 'utf8')
       expect(result).toBe('')
-    })
-  })
-
-  describe('getRandomString', () => {
-    test('should return a random string', () => {
-      const result = getRandomString()
-      expect(typeof result).toBe('string')
-      expect(result.length).toBeGreaterThan(0)
     })
   })
 

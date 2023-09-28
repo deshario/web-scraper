@@ -25,6 +25,6 @@ export const initSocket = (server: http.Server) => {
   return io
 }
 
-export const syncKeyword = (username: string, payload: TKeywordResult | null) => {
+export const syncKeyword = (username: string, payload: TKeywordResult) => {
   io.to(username).emit('keyword', JSON.stringify(payload))
 }

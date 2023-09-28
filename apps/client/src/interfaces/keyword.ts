@@ -6,7 +6,7 @@ export type TKeyword = {
   adWordsCount?: number
   resultsCount?: string
   executionTime?: number
-  htmlPreview?: string
+  contentId?: number
   isProcessed: boolean
 }
 

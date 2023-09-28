@@ -60,7 +60,7 @@ const KeywordPage = () => {
                       <td>{renderCellItem(isProcessed, keyword.resultsCount)}</td>
                       <td>{renderCellItem(isProcessed, keyword.executionTime)}</td>
                       <td>
-                        {renderPreview(isProcessed, keyword.htmlPreview, Skeleton, (preview) => (
+                        {renderPreview(isProcessed, keyword.contentId, Skeleton, (preview) => (
                           <Button target='_blank' href={preview} variant='success'>
                             View
                           </Button>

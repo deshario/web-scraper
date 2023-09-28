@@ -21,10 +21,6 @@ export const extractNonce = (html: string) => {
   return nonce
 }
 
-export const getRandomString = () => {
-  return (Math.random() + 1).toString(36).substring(3)
-}
-
 export const getRandomAgent = () => {
   const userAgents = [
     'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36',
