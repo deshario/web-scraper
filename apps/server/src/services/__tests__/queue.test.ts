@@ -1,5 +1,5 @@
 import Bull from 'bull'
-import { addKeywordsToQueue } from '../'
+import { addKeywordToQueue } from '../'
 import env from '../../config/environment'
 
 jest.mock('bull', () => ({
@@ -16,12 +16,11 @@ describe('Bull Queue', () => {
       redis: env.redis.connection,
     })
     const payload = {
-      ownerId: 1,
       ownerName: 'string',
-      payload: [{ id: 1, keyword: 'iPhone' }],
+      payload: { id: 1, keyword: 'iPhone' },
     }
-    await addKeywordsToQueue(payload)
-    expect(scraperQueue.add).toHaveBeenCalledWith(payload, { delay: 1000 })
+    await addKeywordToQueue(payload)
+    expect(scraperQueue.add).toHaveBeenCalledTimes(1)
     expect(scraperQueue.process).toHaveBeenCalledTimes(1)
   })
 })

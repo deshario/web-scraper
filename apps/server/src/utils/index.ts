@@ -1,14 +1,5 @@
 import fs from 'fs'
 
-export const splitArrToChunks = <T>(array: T[], chunkSize: number) => {
-  const numChunks = Math.ceil(array.length / chunkSize)
-  return Array.from({ length: numChunks }, (_, index) => {
-    const start = index * chunkSize
-    const end = start + chunkSize
-    return array.slice(start, end)
-  })
-}
-
 export const getExecutionResult = (resultsText = '') => {
   const regexPattern = /([\d,]+)\sresults\s\(([\d.]+)\sseconds\)/
   const match = regexPattern.exec(resultsText.trim())
@@ -47,9 +38,9 @@ export const getRandomAgent = () => {
   return userAgents[random]
 }
 
-export const getRandomDelay = (isQuickDelay = false) => {
-  const minDelayMS = isQuickDelay ? 100 : 1000
-  const maxDelayMS = isQuickDelay ? 400 : 4000
+export const getRandomDelay = () => {
+  const minDelayMS = 500 // 0.5 second
+  const maxDelayMS = 2000 // 2 second
   const randomDelay = Math.random() * (maxDelayMS - minDelayMS) + minDelayMS
   return Math.floor(randomDelay)
 }

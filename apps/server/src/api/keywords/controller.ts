@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { models } from '../../db/models'
-import { extractNonce, getErrorMsg, splitArrToChunks } from '../../utils'
-import { addKeywordsToQueue } from '../../services'
+import { extractNonce, getErrorMsg } from '../../utils'
+import { addKeywordToQueue } from '../../services'
 import path from 'path'
 
 const getKeywords = async (req: Request, res: Response) => {
@@ -34,12 +34,10 @@ const uploadKeywords = async (req: Request, res: Response) => {
 
     const savedKeywords = await models.Keyword.bulkCreate(payload)
     const keywordsWithId = savedKeywords.map(({ id, keyword }) => ({ id, keyword }))
-    const chunks = splitArrToChunks(keywordsWithId, 5) // 5 keywords per job
-    const addToQueue = chunks.map((chunk) =>
-      addKeywordsToQueue({
-        ownerId: userId,
+    const addToQueue = keywordsWithId.map((keywordWithId) =>
+      addKeywordToQueue({
         ownerName: username,
-        payload: chunk,
+        payload: keywordWithId,
       }),
     )
 

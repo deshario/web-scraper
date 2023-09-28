@@ -1,5 +1,6 @@
 import { Server } from 'socket.io'
 import * as http from 'http'
+import { TKeywordResult } from '../interfaces'
 
 let io: Server
 
@@ -24,7 +25,6 @@ export const initSocket = (server: http.Server) => {
   return io
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const syncKeywords = (username: string, payload: any) => {
-  io.to(username).emit('keywords', JSON.stringify(payload))
+export const syncKeyword = (username: string, payload: TKeywordResult | null) => {
+  io.to(username).emit('keyword', JSON.stringify(payload))
 }

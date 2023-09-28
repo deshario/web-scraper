@@ -5,22 +5,12 @@ import {
   getRandomAgent,
   getRandomDelay,
   getRandomString,
-  splitArrToChunks,
   getExecutionResult,
 } from '../index'
 
 const html = `<!doctype html><head><script nonce="123456789"></script><script nonce="123456789"></script></head></html>`
 
 describe('Utility Functions', () => {
-  describe('splitArrToChunks', () => {
-    test('should split an array into chunks', () => {
-      const array = [1, 2, 3, 4, 5]
-      const chunkSize = 2
-      const result = splitArrToChunks(array, chunkSize)
-      expect(result).toEqual([[1, 2], [3, 4], [5]])
-    })
-  })
-
   describe('getExecutionResult', () => {
     test('should parse and return valid execution results', () => {
       const resultsText = 'About 2,160,000,000 results (0.48 seconds)'
@@ -80,7 +70,7 @@ describe('Utility Functions', () => {
 
   describe('getRandomDelay', () => {
     test('should return a random delay within the specified range', () => {
-      const minDelay = 1000
+      const minDelay = 500
       const maxDelay = 4000
       const result = getRandomDelay()
 

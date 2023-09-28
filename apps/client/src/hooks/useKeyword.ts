@@ -36,10 +36,12 @@ export const useKeyword = () => {
   const patchKeywords = useCallback(
     (payload: string) => {
       try {
-        const changedKeywords: TKeyword[] = JSON.parse(payload)
+        const changedKeyword: TKeyword = JSON.parse(payload)
         const latestKeywords = keywords.map((keyword) => {
-          const changedKeyword = changedKeywords.find((newItems) => newItems.id === keyword.id)
-          return { ...keyword, ...changedKeyword }
+          if (keyword.id === changedKeyword.id) {
+            return { ...keyword, ...changedKeyword }
+          }
+          return keyword
         })
         setKeywords(latestKeywords)
       } catch (err) {
