@@ -2,6 +2,7 @@ import Bull from 'bull'
 import env from '../../config/environment'
 import { processKeyword } from './processor'
 import { TKeywordProcessor } from '../../interfaces'
+import { getRandomDelay } from '../../utils'
 
 const scraperQueue = new Bull('scraper-queue', {
   redis: env.redis.connection,
@@ -9,6 +10,6 @@ const scraperQueue = new Bull('scraper-queue', {
 
 scraperQueue.process(processKeyword)
 
-export const addKeywordsToQueue = async (payload: TKeywordProcessor) => {
-  await scraperQueue.add(payload, { delay: 1000 })
+export const addKeywordToQueue = async (payload: TKeywordProcessor) => {
+  await scraperQueue.add(payload, { delay: getRandomDelay() })
 }

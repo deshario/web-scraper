@@ -2,19 +2,15 @@ import fs from 'fs'
 import path from 'path'
 import * as cheerio from 'cheerio'
 import { Job } from 'bull'
-import { TKeywordPayload, TKeywordProcessor, TKeywordResult } from '../../interfaces'
-import { saveResults } from './saveResults'
+import { TKeywordProcessor, TKeywordResult } from '../../interfaces'
+import { saveResult } from './saveResult'
 import { scrapeGoogleSearch } from './scraper'
-import { getExecutionResult, getRandomDelay, getRandomString } from '../../utils'
-import { syncKeywords } from '../socket'
+import { getExecutionResult, getRandomString } from '../../utils'
+import { syncKeyword } from '../socket'
 
-const scrapeKeywordData = async (
-  uploader: number,
-  payload: TKeywordPayload,
-): Promise<TKeywordResult | null> => {
+const scrapeKeywordData = async (keyword: string): Promise<TKeywordResult | null> => {
   try {
-    const { id, keyword } = payload
-    const html = await scrapeGoogleSearch(payload.keyword)
+    const html = await scrapeGoogleSearch(keyword)
     const $ = cheerio.load(html)
     const totalLinks = $('body a').length
     const adWordsCount = $('.uEierd').length // #tads | #uEierd
@@ -22,15 +18,12 @@ const scrapeKeywordData = async (
     const { resultsCount, executionTime } = getExecutionResult(stats)
 
     return {
-      id,
-      keyword,
-      uploader,
       totalLinks,
       adWordsCount,
       ...(resultsCount && { resultsCount }),
       ...(executionTime && { executionTime }),
-      isProcessed: true,
       htmlPreview: html,
+      isProcessed: true,
     }
   } catch (err) {
     return null
@@ -39,32 +32,22 @@ const scrapeKeywordData = async (
 
 export const processKeyword = async (job: Job<TKeywordProcessor>) => {
   try {
-    const { ownerId, ownerName, payload } = job.data
-    console.log(`Job: [${job.id}]`)
-
-    const scrapedResults: TKeywordResult[] = []
-    for (const keyword of payload) {
-      console.log(`Processing: ${keyword.keyword}`)
-      const result = await scrapeKeywordData(ownerId, keyword)
-      if (result) {
-        scrapedResults.push(result)
-        const fileName = `${getRandomString()}.html`
-        const pagesDir = path.join(__dirname, '../../pages', fileName)
-        await fs.writeFileSync(pagesDir, result.htmlPreview!)
-        result.htmlPreview = fileName
-      }
-      // Quick delay between 100ms - 400ms
-      await new Promise((resolve) => setTimeout(resolve, getRandomDelay()))
+    const { ownerName, payload } = job.data
+    console.log(`Processing: [${job.id}] ${payload.keyword}`)
+    const result = await scrapeKeywordData(payload.keyword)
+    if (result) {
+      const fileName = `${getRandomString()}.html`
+      const pagesDir = path.join(__dirname, '../../pages', fileName)
+      await fs.writeFileSync(pagesDir, result.htmlPreview!)
+      result.id = payload.id
+      result.htmlPreview = fileName
     }
 
-    syncKeywords(ownerName, scrapedResults)
+    await saveResult(result)
 
-    await saveResults(scrapedResults)
+    syncKeyword(ownerName, result)
 
-    // Longer delay between 1000ms - 4000ms
-    await new Promise((resolve) => setTimeout(resolve, getRandomDelay(false)))
-
-    return Promise.resolve(scrapedResults)
+    return Promise.resolve(result)
   } catch (err) {
     return Promise.reject(err)
   }

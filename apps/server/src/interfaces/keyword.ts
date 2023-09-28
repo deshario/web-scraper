@@ -9,15 +9,16 @@ export type TKeyword = {
   isProcessed: boolean
 }
 
-export type TKeywordPayload = {
+type TKeywordPayload = {
   id: number
   keyword: string
 }
 
-export type TKeywordResult = TKeyword & { id: number }
+export type TKeywordResult = Omit<TKeyword, 'keyword' | 'uploader'> & {
+  id?: number
+}
 
 export type TKeywordProcessor = {
-  ownerId: number
   ownerName: string
-  payload: TKeywordPayload[]
+  payload: TKeywordPayload
 }
