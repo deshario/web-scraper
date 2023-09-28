@@ -1,5 +1,4 @@
 import apiService from '@api/service'
-import { baseURL } from '@constants/index'
 import { TKeyword } from '@interfaces/keyword'
 import { useEffect, useState, useCallback, ReactNode } from 'react'
 
@@ -13,7 +12,7 @@ type TRenderButtonFunction = (
   processed: boolean,
   value: number | undefined,
   skeleton: JSX.Element,
-  render: (link: string) => ReactNode,
+  render: () => ReactNode,
 ) => ReactNode
 
 export const useKeyword = () => {
@@ -24,8 +23,7 @@ export const useKeyword = () => {
   }
 
   const renderPreview: TRenderButtonFunction = (processed, value, skeleton, render) => {
-    const preview = `${baseURL}/api/keywords/}`
-    return value ? render(preview) : processed ? '-' : skeleton
+    return value ? render() : processed ? '-' : skeleton
   }
 
   const fetchKeywords = () => {

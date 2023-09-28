@@ -73,6 +73,15 @@ const uploadKeyword = async (file: File) => {
   }
 }
 
-const apiService = { login, register, getKeywords, uploadKeyword }
+const getKeywordHtmlContent = async (contentId: number) => {
+  try {
+    const response = await axiosInstance.get(`/api/keywords/${contentId}`)
+    return response.data || null
+  } catch (err) {
+    return null
+  }
+}
+
+const apiService = { login, register, getKeywords, uploadKeyword, getKeywordHtmlContent }
 
 export default apiService

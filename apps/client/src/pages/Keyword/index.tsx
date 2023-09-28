@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { useKeyword } from '@hooks/useKeyword'
 import List from '@components/List'
 import Row from 'react-bootstrap/Row'
@@ -9,10 +9,12 @@ import Table from 'react-bootstrap/Table'
 import Spinner from 'react-bootstrap/Spinner'
 import Uploader from '@components/Modal/Uploader'
 import useSocket from '@hooks/useSocket'
+import Viewer from '@components/Modal/Viewer'
 
 const Skeleton = <Spinner animation='border' variant='primary' />
 
 const KeywordPage = () => {
+  const [viewerId, setViewerId] = useState<number | null>(null)
   const { keywords, renderCell, renderPreview, refreshList, patchKeywords } = useKeyword()
 
   useSocket({ patchKeywords })
@@ -23,6 +25,12 @@ const KeywordPage = () => {
     },
     [renderCell],
   )
+
+  const viewModal = (contentId?: number) => {
+    if (contentId) {
+      setViewerId(contentId)
+    }
+  }
 
   return (
     <Row>
@@ -60,8 +68,8 @@ const KeywordPage = () => {
                       <td>{renderCellItem(isProcessed, keyword.resultsCount)}</td>
                       <td>{renderCellItem(isProcessed, keyword.executionTime)}</td>
                       <td>
-                        {renderPreview(isProcessed, keyword.contentId, Skeleton, (preview) => (
-                          <Button target='_blank' href={preview} variant='success'>
+                        {renderPreview(isProcessed, keyword.contentId, Skeleton, () => (
+                          <Button variant='success' onClick={() => viewModal(keyword.contentId)}>
                             View
                           </Button>
                         ))}
@@ -78,6 +86,7 @@ const KeywordPage = () => {
             </tbody>
           </Table>
         </Card>
+        <Viewer contentId={viewerId} dismiss={() => setViewerId(null)} />
       </Col>
     </Row>
   )
