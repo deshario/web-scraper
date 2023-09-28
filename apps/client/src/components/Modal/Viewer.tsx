@@ -1,6 +1,7 @@
 import HTMLViewer from '@components/HtmlViewer'
 import useViewer from '@hooks/useViewer'
 import Modal from 'react-bootstrap/Modal'
+import Button from 'react-bootstrap/Button'
 
 interface IViewer {
   contentId: number | null
@@ -12,8 +13,11 @@ const Viewer = ({ contentId, dismiss }: IViewer) => {
 
   return (
     <Modal show={!!contentId} fullscreen={true} onHide={dismiss}>
-      <Modal.Header closeButton>
+      <Modal.Header>
         <Modal.Title>Preview</Modal.Title>
+        <Button variant='danger' className='rounded-circle' onClick={dismiss}>
+          X
+        </Button>
       </Modal.Header>
       <Modal.Body>
         <HTMLViewer html={htmlContent} />
