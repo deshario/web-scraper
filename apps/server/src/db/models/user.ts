@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt'
 import { Model, DataTypes, Sequelize, Op, HasManyGetAssociationsMixin } from 'sequelize'
 import { TUser, TUserFilter } from '../../interfaces'
+import { getErrorMsg } from '../../utils'
 import Keyword from './keyword'
 
 class User extends Model implements TUser {
@@ -63,11 +64,11 @@ class User extends Model implements TUser {
       })
       return user
     } catch (error) {
-      return null
+      throw new Error(getErrorMsg(error))
     }
   }
 
-  static async signUp(username: string, email: string, password: string): Promise<User | null> {
+  static async signUp(username: string, email: string, password: string): Promise<User> {
     try {
       const salt = bcrypt.genSaltSync()
       const passwordHash = bcrypt.hashSync(password, salt)
@@ -79,7 +80,7 @@ class User extends Model implements TUser {
       })
       return newUser
     } catch (error) {
-      return null
+      throw new Error(getErrorMsg(error))
     }
   }
 
