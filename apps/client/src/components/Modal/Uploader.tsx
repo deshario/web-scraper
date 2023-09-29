@@ -1,6 +1,5 @@
 import apiService from '@api/service'
 import UploadForm from '@components/Forms/UploadForm'
-import { useNotification } from '@hooks/useNotification'
 import { useState } from 'react'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
@@ -12,7 +11,6 @@ interface IUpload {
 const Uploader = ({ onComplete }: IUpload) => {
   const [show, setShow] = useState(false)
   const [csvFile, setCsvFile] = useState<File | null>(null)
-  const { pushNotification } = useNotification()
 
   const toggleShow = () => setShow(!show)
 
@@ -20,10 +18,6 @@ const Uploader = ({ onComplete }: IUpload) => {
     if (csvFile) {
       await apiService.uploadKeyword(csvFile)
       onComplete()
-      pushNotification({
-        message: 'Upload Success',
-        type: 'success',
-      })
     }
     toggleShow()
   }

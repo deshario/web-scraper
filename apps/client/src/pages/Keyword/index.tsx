@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react'
 import { useKeyword } from '@hooks/useKeyword'
+import { useNotification } from '@hooks/useNotification'
 import List from '@components/List'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -15,6 +16,7 @@ const Skeleton = <Spinner animation='border' variant='primary' />
 
 const KeywordPage = () => {
   const [viewerId, setViewerId] = useState<number | null>(null)
+  const { pushNotification } = useNotification()
   const { keywords, renderCell, renderPreview, refreshList, patchKeywords } = useKeyword()
 
   useSocket({ patchKeywords })
@@ -32,13 +34,21 @@ const KeywordPage = () => {
     }
   }
 
+  const uploadComplete = () => {
+    refreshList()
+    pushNotification({
+      message: 'Upload Success',
+      type: 'success',
+    })
+  }
+
   return (
     <Row>
       <Col>
         <Card>
           <Card.Header className='d-flex p-3'>
             <h4>Keywords</h4>
-            <Uploader onComplete={refreshList} />
+            <Uploader onComplete={uploadComplete} />
           </Card.Header>
           <Table responsive striped bordered hover style={{ marginBottom: 0 }}>
             <thead>
