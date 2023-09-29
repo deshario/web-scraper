@@ -1,4 +1,3 @@
-import jwt from 'jsonwebtoken'
 import { Request, Response, NextFunction } from 'express'
 import { validateRefreshToken } from '../auth'
 
@@ -19,33 +18,41 @@ const setupMock = () => {
   }
 }
 
+jest.mock('../../services')
+
 describe('validateRefreshToken', () => {
+  let verifyRefreshTokenMock: jest.Mock
+
+  beforeAll(() => {
+    verifyRefreshTokenMock = jest.requireMock('../../services').verifyRefreshToken
+  })
+
   test('Should verify token and attach user to request', () => {
     const { req, res, next } = setupMock()
     const jwtPayload = {
       id: 1,
-      email: 'user@gmail.com',
+      username: 'daryl',
+      email: 'daryl@twd.com',
     }
 
-    const verify = jest.spyOn(jwt, 'verify')
-    verify.mockImplementation(() => jwtPayload)
-
+    verifyRefreshTokenMock.mockReturnValue(jwtPayload)
     validateRefreshToken(req, res, next)
 
-    expect(next).toHaveBeenCalledTimes(1)
-    expect(req.user).toEqual({
-      id: jwtPayload.id,
-      email: jwtPayload.email,
-    })
-
-    verify.mockRestore()
+    expect(req.user).toEqual(jwtPayload)
+    expect(next).toHaveBeenCalled()
+    expect(verifyRefreshTokenMock).toHaveBeenCalledWith(req.body.refreshToken)
   })
 
-  test('Should throw an error for an invalid refresh token', () => {
+  test('Should return 401 for an invalid refresh token', () => {
     const { req, res, next } = setupMock()
+
+    verifyRefreshTokenMock.mockReturnValue(null)
     validateRefreshToken(req, res, next)
-    expect(res.status).toHaveBeenCalledWith(401)
-    expect(res.json).toHaveBeenCalledWith({ success: false, error: 'Invalid refresh token' })
+
+    expect(req.user).toBeUndefined()
     expect(next).not.toHaveBeenCalled()
+    expect(res.status).toHaveBeenCalledWith(401)
+    expect(verifyRefreshTokenMock).toHaveBeenCalledWith(req.body.refreshToken)
+    expect(res.json).toHaveBeenCalledWith({ success: false, error: 'Invalid refresh token' })
   })
 })

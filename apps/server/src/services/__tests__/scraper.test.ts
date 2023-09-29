@@ -10,7 +10,6 @@ describe('scrapeGoogleSearch', () => {
 
   test('should return an empty string for invalid request', async () => {
     axios.get = jest.fn().mockRejectedValue(new Error('Request failed'))
-    const result = await scrapeGoogleSearch('')
-    expect(result).toEqual('')
+    await expect(scrapeGoogleSearch('')).rejects.toThrow('Request failed')
   })
 })
