@@ -2,7 +2,7 @@ import Alert from 'react-bootstrap/Alert'
 import styles from './index.module.scss'
 import { useNotification } from '@hooks/useNotification'
 
-const Layout = () => {
+const Notification = () => {
   const { notifications } = useNotification()
 
   return (
@@ -16,4 +16,4 @@ const Layout = () => {
   )
 }
 
-export default Layout
+export default Notification
