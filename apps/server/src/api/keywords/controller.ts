@@ -18,7 +18,7 @@ const getKeywords = async (req: Request, res: Response) => {
 const uploadKeywords = async (req: Request, res: Response) => {
   try {
     if (!req.file) {
-      return res.json({ success: false, error: 'Please upload valid file' })
+      throw new Error('Please upload valid file')
     }
     const userId = req.user!.id
     const username = req.user!.username
@@ -52,7 +52,7 @@ const getPreview = async (req: Request, res: Response) => {
   try {
     const keywordContent = await models.KeywordContent.findOne({ where: { id: req.params.id } })
     if (!keywordContent) {
-      return res.json({ success: false })
+      throw new Error('Keyword content not found!')
     }
     const { htmlContent } = keywordContent
     return res.json({ success: true, htmlContent })

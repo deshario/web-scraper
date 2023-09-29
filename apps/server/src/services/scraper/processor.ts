@@ -3,10 +3,10 @@ import { Job } from 'bull'
 import { TKeywordProcessor, TKeywordResult, TScrapedResult } from '../../interfaces'
 import { saveKeywordContent, saveResult } from './saveResult'
 import { scrapeGoogleSearch } from './scraper'
-import { getExecutionResult } from '../../utils'
+import { getErrorMsg, getExecutionResult } from '../../utils'
 import { syncKeyword } from '../socket'
 
-const scrapeKeywordData = async (keyword: string): Promise<TScrapedResult | null> => {
+const scrapeKeywordData = async (keyword: string): Promise<TScrapedResult> => {
   try {
     const html = await scrapeGoogleSearch(keyword)
     const $ = cheerio.load(html)
@@ -23,7 +23,7 @@ const scrapeKeywordData = async (keyword: string): Promise<TScrapedResult | null
       htmlContent: html,
     }
   } catch (err) {
-    return null
+    throw new Error(getErrorMsg(err))
   }
 }
 
@@ -54,6 +54,6 @@ export const processKeyword = async (job: Job<TKeywordProcessor>) => {
 
     return Promise.resolve(keywordResult)
   } catch (err) {
-    return Promise.reject(err)
+    throw new Error(getErrorMsg(err))
   }
 }
