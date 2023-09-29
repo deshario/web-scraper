@@ -21,7 +21,7 @@ const uploadKeywords = async (req: Request, res: Response) => {
       return res.json({ success: false, error: 'Please upload valid file' })
     }
     const { id: userId, username } = req.user!
-    const keywords = await parseCsv(req.file)
+    const keywords = parseCsv(req.file)
     const payload = createKeywordPayload(userId, keywords)
     const savedKeywords = await createKeyword(payload)
     const keywordsQueue = addToQueue(username, savedKeywords)
