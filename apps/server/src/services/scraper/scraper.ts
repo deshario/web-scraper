@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getErrorMsg, getRandomAgent } from '../../utils'
+import { getRandomAgent } from '../../utils'
 
 export const scrapeGoogleSearch = async (keyword: string): Promise<string> => {
   try {
@@ -11,6 +11,6 @@ export const scrapeGoogleSearch = async (keyword: string): Promise<string> => {
     })
     return response.data || ''
   } catch (error) {
-    throw new Error(getErrorMsg(error))
+    throw error
   }
 }

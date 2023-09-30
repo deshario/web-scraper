@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt'
 import { Model, DataTypes, Sequelize, Op, HasManyGetAssociationsMixin } from 'sequelize'
 import { TUser, TUserFilter } from '../../interfaces'
-import { getErrorMsg } from '../../utils'
 import Keyword from './keyword'
 
 class User extends Model implements TUser {
@@ -64,7 +63,7 @@ class User extends Model implements TUser {
       })
       return user
     } catch (error) {
-      throw new Error(getErrorMsg(error))
+      throw error
     }
   }
 
@@ -80,7 +79,7 @@ class User extends Model implements TUser {
       })
       return newUser
     } catch (error) {
-      throw new Error(getErrorMsg(error))
+      throw error
     }
   }
 
