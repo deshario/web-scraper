@@ -9,7 +9,7 @@ describe('Utility Functions', () => {
     })
 
     test('should return null for invalid results', () => {
-      const result = getExecutionResult('')
+      const result = getExecutionResult()
       expect(result).toEqual({ resultsCount: null, executionTime: null })
     })
   })
