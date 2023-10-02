@@ -10,8 +10,8 @@ const getKeywords = async (req: Request, res: Response) => {
     })
     const keywords = user ? await user.getKeywords({ order: [['id', 'DESC']] }) : []
     return res.json({ success: true, keywords })
-  } catch (err) {
-    return res.json({ success: false, error: getErrorMsg(err) })
+  } catch (error) {
+    return res.json({ success: false, error: getErrorMsg(error) })
   }
 }
 
@@ -43,8 +43,8 @@ const uploadKeywords = async (req: Request, res: Response) => {
     await Promise.all(addToQueue)
 
     return res.json({ success: true })
-  } catch (err) {
-    return res.json({ success: false, error: getErrorMsg(err) })
+  } catch (error) {
+    return res.json({ success: false, error: getErrorMsg(error) })
   }
 }
 
@@ -56,8 +56,8 @@ const getPreview = async (req: Request, res: Response) => {
     }
     const { htmlContent } = keywordContent
     return res.json({ success: true, htmlContent })
-  } catch (err) {
-    return res.json({ success: false, error: getErrorMsg(err) })
+  } catch (error) {
+    return res.json({ success: false, error: getErrorMsg(error) })
   }
 }
 

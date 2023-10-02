@@ -19,7 +19,7 @@ export const scrapeKeywordData = async (keyword: string): Promise<TScrapedResult
       ...(executionTime && { executionTime }),
       htmlContent: html,
     }
-  } catch (err) {
-    throw err
+  } catch (error) {
+    throw error
   }
 }

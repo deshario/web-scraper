@@ -8,9 +8,9 @@ export const checkAuthentication = (req: Request, res: Response, next: NextFunct
   passport.authenticate(
     'jwt',
     { session: false },
-    (err: unknown, user?: TExpressAuthUser, info?: TExpressAuthInfo) => {
-      if (err || !user) {
-        const errorMessage = err ? getErrorMsg(err) : info?.message
+    (error: unknown, user?: TExpressAuthUser, info?: TExpressAuthInfo) => {
+      if (error || !user) {
+        const errorMessage = error ? getErrorMsg(error) : info?.message
         return res.status(401).json({ success: false, error: errorMessage })
       }
       req.user = user
@@ -22,9 +22,9 @@ export const checkAuthentication = (req: Request, res: Response, next: NextFunct
 export const authenticate = (req: Request, res: Response, next: NextFunction) => {
   passport.authenticate(
     'local',
-    (err: unknown, user?: TExpressAuthUser, info?: TExpressAuthInfo) => {
-      if (err || !user) {
-        const errorMessage = err ? getErrorMsg(err) : info?.message
+    (error: unknown, user?: TExpressAuthUser, info?: TExpressAuthInfo) => {
+      if (error || !user) {
+        const errorMessage = error ? getErrorMsg(error) : info?.message
         return res.status(401).json({ success: false, error: errorMessage })
       }
       req.user = user

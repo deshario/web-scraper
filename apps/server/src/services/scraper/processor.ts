@@ -31,7 +31,7 @@ export const processKeyword = async (job: Job<TKeywordProcessor>) => {
     syncKeyword(ownerName, keywordResult)
 
     return Promise.resolve(keywordResult)
-  } catch (err) {
-    throw err
+  } catch (error) {
+    throw error
   }
 }

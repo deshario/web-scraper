@@ -9,8 +9,8 @@ const verifyPayload = async (payload: TJwtPayload, done: TDoneCallback) => {
     const user = await models.User.getUser({ id: payload.id })
     if (!user) return done(undefined, false, { message: 'E-mail not found!' })
     return done(null, user)
-  } catch (err) {
-    return done(err, false)
+  } catch (error) {
+    return done(error, false)
   }
 }
 
