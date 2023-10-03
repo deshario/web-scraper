@@ -18,8 +18,8 @@ const verifyUser = async (email: string, password: string, done: TDoneCallback) 
     }
 
     return done(null, sanitizedUser)
-  } catch (err) {
-    return done(err, false)
+  } catch (error) {
+    return done(error, false)
   }
 }
 

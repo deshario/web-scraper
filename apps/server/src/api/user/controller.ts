@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { models } from '../../db/models'
+import { getErrorMsg } from '../../utils'
 
 const getUsers = async (req: Request, res: Response) => {
   try {
@@ -10,8 +11,8 @@ const getUsers = async (req: Request, res: Response) => {
       },
     })
     return res.json({ success: true, data: users })
-  } catch (err) {
-    return res.json({ success: false, error: 'Something went wrong' })
+  } catch (error) {
+    return res.json({ success: false, error: getErrorMsg(error) })
   }
 }
 

@@ -2,16 +2,16 @@ import passport from 'passport'
 import { Request, Response, NextFunction } from 'express'
 import { TExpressAuthUser, TExpressAuthInfo } from '../interfaces'
 import { verifyRefreshToken } from '../services'
+import { getErrorMsg } from '../utils'
 
 export const checkAuthentication = (req: Request, res: Response, next: NextFunction) => {
   passport.authenticate(
     'jwt',
     { session: false },
-    (err: unknown, user?: TExpressAuthUser, info?: TExpressAuthInfo) => {
-      if (err || !user) {
-        return res
-          .status(401)
-          .json({ success: false, error: info?.message || 'Invalid credentials' })
+    (error: unknown, user?: TExpressAuthUser, info?: TExpressAuthInfo) => {
+      if (error || !user) {
+        const errorMessage = error ? getErrorMsg(error) : info?.message
+        return res.status(401).json({ success: false, error: errorMessage })
       }
       req.user = user
       return next()
@@ -22,11 +22,10 @@ export const checkAuthentication = (req: Request, res: Response, next: NextFunct
 export const authenticate = (req: Request, res: Response, next: NextFunction) => {
   passport.authenticate(
     'local',
-    (err: unknown, user?: TExpressAuthUser, info?: TExpressAuthInfo) => {
-      if (err || !user) {
-        return res
-          .status(401)
-          .json({ success: false, error: info?.message || 'Invalid credentials' })
+    (error: unknown, user?: TExpressAuthUser, info?: TExpressAuthInfo) => {
+      if (error || !user) {
+        const errorMessage = error ? getErrorMsg(error) : info?.message
+        return res.status(401).json({ success: false, error: errorMessage })
       }
       req.user = user
       return next()

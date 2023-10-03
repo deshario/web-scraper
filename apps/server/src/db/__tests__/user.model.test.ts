@@ -35,11 +35,11 @@ describe('User', () => {
       expect(user!.email).toEqual(newUser.email)
     })
 
-    test('should return null for a invalid user', async () => {
+    test('should throw an error for a invalid user', async () => {
+      const errorMessage = 'Get user error'
       const findOneMock = jest.spyOn(User, 'findOne')
-      findOneMock.mockRejectedValue(new Error('Database error'))
-      const user = await User.getUser({ username: '' })
-      expect(user).toBeNull()
+      findOneMock.mockRejectedValue(new Error(errorMessage))
+      await expect(User.getUser({})).rejects.toThrowError(errorMessage)
     })
   })
 
@@ -49,11 +49,11 @@ describe('User', () => {
       expect(user).toBeDefined()
     })
 
-    test('should return null for a invalid signup', async () => {
-      const signUp = jest.spyOn(User, 'create')
-      signUp.mockRejectedValue(new Error('Database error'))
-      const user = await User.signUp('', '', '')
-      expect(user).toBeNull()
+    test('should throw an error for a invalid signup', async () => {
+      const errorMessage = 'Signup error'
+      const signUpMock = jest.spyOn(User, 'create')
+      signUpMock.mockRejectedValue(new Error(errorMessage))
+      await expect(User.signUp('', '', '')).rejects.toThrowError(errorMessage)
     })
   })
 

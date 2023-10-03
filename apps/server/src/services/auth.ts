@@ -13,7 +13,7 @@ export const signRefreshToken = (payload: TJwtSignPayload) => {
 export const verifyRefreshToken = (refreshToken: string) => {
   try {
     return jwt.verify(refreshToken, env.secret.refreshToken) as TJwtSignPayload
-  } catch (err) {
-    return null
+  } catch (error) {
+    throw error
   }
 }

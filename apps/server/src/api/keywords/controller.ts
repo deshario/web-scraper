@@ -10,15 +10,15 @@ const getKeywords = async (req: Request, res: Response) => {
     })
     const keywords = user ? await user.getKeywords({ order: [['id', 'DESC']] }) : []
     return res.json({ success: true, keywords })
-  } catch (err) {
-    return res.json({ success: false, error: getErrorMsg(err) })
+  } catch (error) {
+    return res.json({ success: false, error: getErrorMsg(error) })
   }
 }
 
 const uploadKeywords = async (req: Request, res: Response) => {
   try {
     if (!req.file) {
-      return res.json({ success: false, error: 'Please upload valid file' })
+      throw new Error('Please upload valid file')
     }
     const { id: userId, username } = req.user!
     const keywords = parseCsv(req.file)
@@ -27,8 +27,8 @@ const uploadKeywords = async (req: Request, res: Response) => {
     const keywordsQueue = addToQueue(username, savedKeywords)
     await Promise.all(keywordsQueue)
     return res.json({ success: true })
-  } catch (err) {
-    return res.json({ success: false, error: getErrorMsg(err) })
+  } catch (error) {
+    return res.json({ success: false, error: getErrorMsg(error) })
   }
 }
 
@@ -36,12 +36,12 @@ const getPreview = async (req: Request, res: Response) => {
   try {
     const keywordContent = await models.KeywordContent.findOne({ where: { id: req.params.id } })
     if (!keywordContent) {
-      return res.json({ success: false })
+      throw new Error('Keyword content not found!')
     }
     const { htmlContent } = keywordContent
     return res.json({ success: true, htmlContent })
-  } catch (err) {
-    return res.json({ success: false, error: getErrorMsg(err) })
+  } catch (error) {
+    return res.json({ success: false, error: getErrorMsg(error) })
   }
 }
 

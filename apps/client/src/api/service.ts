@@ -52,7 +52,7 @@ const getKeywords = async () => {
     const data = response.data as TKeywordResponse
     if (data.success) return data.keywords
     return []
-  } catch (err) {
+  } catch (error) {
     return []
   }
 }
@@ -68,7 +68,7 @@ const uploadKeyword = async (file: File) => {
     })
     const data = response.data as IResponse
     return data.success
-  } catch (err) {
+  } catch (error) {
     return false
   }
 }
@@ -77,7 +77,7 @@ const getKeywordHtmlContent = async (contentId: number) => {
   try {
     const response = await axiosInstance.get(`/api/keywords/${contentId}`)
     return response.data || null
-  } catch (err) {
+  } catch (error) {
     return null
   }
 }

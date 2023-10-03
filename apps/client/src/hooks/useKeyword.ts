@@ -41,9 +41,9 @@ export const useKeyword = () => {
           return keyword
         })
         setKeywords(latestKeywords)
-      } catch (err) {
+      } catch (error) {
         // eslint-disable-next-line no-console
-        console.warn('[patchKeywords]', err)
+        console.warn('[patchKeywords]', error)
       }
     },
     [keywords],

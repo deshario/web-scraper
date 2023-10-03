@@ -31,10 +31,15 @@ describe('JWT', () => {
       expect(payloadKeys.every((key) => decoded!.hasOwnProperty(key))).toBe(true)
     })
 
-    test('should return null if refreshToken is invalid', () => {
-      const invalidRefreshToken = ''
-      const decoded = verifyRefreshToken(invalidRefreshToken)
-      expect(decoded).toBeNull()
+    test('should throw an error if refreshToken is invalid', () => {
+      const verify = jest.spyOn(jwt, 'verify')
+      verify.mockImplementation(() => {
+        throw new Error('jwt must be provided')
+      })
+
+      const refreshToken = ''
+      expect(() => verifyRefreshToken(refreshToken)).toThrowError('jwt must be provided')
+      expect(verify).toHaveBeenCalledWith(refreshToken, env.secret.refreshToken)
     })
   })
 })
